@@ -5,30 +5,17 @@ const fs = require("fs");
 const app = express();
 const upload = multer({ dest: "uploads/" });
 
-/**
- * Endpoint raíz
- */
-app.get("/", (req, res) => {
-  res.send("🚀 Microservicio WA Decrypt en funcionamiento");
-});
-
-/**
- * Endpoint de salud (/ping)
- */
+// Ruta de salud para Render
 app.get("/ping", (req, res) => {
-  res.send("pong 🏓 - el microservicio está vivo!");
+  res.status(200).send("pong");
 });
 
-/**
- * Endpoint para desencriptar archivos
- */
 app.post("/decrypt", upload.single("file"), async (req, res) => {
   try {
     const inputPath = req.file.path;
     const outputPath = `decrypted-${Date.now()}.ogg`;
 
-    // ⚠️ Aquí deberías implementar la lógica real de desencriptado
-    // Por ahora solo copiamos el archivo como simulación
+    // ⚠️ Aquí deberías implementar la lógica de desencriptado real
     fs.copyFileSync(inputPath, outputPath);
 
     res.download(outputPath, () => {
@@ -41,10 +28,6 @@ app.post("/decrypt", upload.single("file"), async (req, res) => {
   }
 });
 
-/**
- * Levantar servidor
- */
-const PORT = process.env.PORT || 10000; // usa el puerto que Render te asigna
-app.listen(PORT, () => {
-  console.log(`Servidor escuchando en puerto ${PORT}`);
-});
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Servidor escuchando en puerto ${PORT}`));
+
